@@ -14,6 +14,10 @@ Plug 'luochen1990/rainbow'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
 Plug 'voldikss/vim-floaterm'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+" Plug 'OmniSharp/omnisharp-vim'
 " Always last
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
@@ -115,17 +119,6 @@ set ignorecase " Case insensitive matching
 set number " Side numbers
 filetype plugin indent on " Allow auto-indenting depending on file type
 
-" Auto completion stuff
-set omnifunc=syntaxcomplete#Complete
-let g:asyncomplete_auto_completeopt = 0
-let g:asyncomplete_auto_popup = 1
-set shortmess+=c
-"set completeopt=menuone,noselect
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -183,3 +176,14 @@ nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 " Keybindings for floatterms
 let g:floaterm_keymap_toggle = '<Leader>ft'
+
+" Setup for mason.nvim for Language Server Protocols
+lua << EOF
+require("mason").setup()
+require("mason-lspconfig").setup()
+require("mason-lspconfig").setup {
+    ensure_installed = { "omnisharp"},
+}
+require("lspconfig").omnisharp.setup {}
+EOF
+
