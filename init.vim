@@ -14,6 +14,7 @@ Plug 'luochen1990/rainbow'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
 Plug 'voldikss/vim-floaterm'
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -183,17 +184,13 @@ nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " Keybindings for floatterms
 let g:floaterm_keymap_toggle = '<Leader>ft'
 
-" Setup for mason.nvim for Language Server Protocols
+" Setup for mason.nvim for Language Server Protocols and nvim-cmp for autocomplete
 lua << EOF
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-lspconfig").setup {
-    ensure_installed = { "omnisharp"},
+	ensure_installed = { "omnisharp", "lua_ls" },
 }
-EOF
-
-"Setup for autocompletion in nvim autocomplete
-lua <<EOF
   local cmp = require'cmp'
 
   cmp.setup({
@@ -251,4 +248,11 @@ lua <<EOF
   require('lspconfig')['omnisharp'].setup {
     capabilities = capabilities
   }
+  require('lspconfig')['lua_ls'].setup {
+    capabilities = capabilities
+  }
+  -- Setup for indent-blankline
+  require("indent_blankline").setup {}
 EOF
+
+
