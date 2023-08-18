@@ -1,4 +1,4 @@
-NVIM config file for the personal use of Rasmus Kjersgaard Bak.
+VIM config file for the personal use of Rasmus Kjersgaard Bak.
 Useful sources for the configuration of different plugins:
 
 LSP and autocomplete related links:
