@@ -181,6 +181,11 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
+" Keybinds to make X and P not overwrite current clipboard
+noremap x "_x
+noremap X "_x
+xnoremap p pgvy
+
 " Keybindings for floatterms
 let g:floaterm_keymap_toggle = '<Leader>ft'
 
