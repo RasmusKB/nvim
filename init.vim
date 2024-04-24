@@ -257,7 +257,7 @@ require("mason-lspconfig").setup {
     capabilities = capabilities
   }
   -- Setup for indent-blankline
-  require("indent_blankline").setup {}
+  require("ibl").setup {}
 EOF
 
 
