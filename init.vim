@@ -12,7 +12,7 @@ Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'lervag/vimtex'
 Plug 'luochen1990/rainbow'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.7' }
 Plug 'voldikss/vim-floaterm'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
