@@ -1,3 +1,5 @@
+Updated for NVIM version (0.11.x)
+
 VIM config file for the personal use of Rasmus Kjersgaard Bak.
 Useful sources for the configuration of different plugins:
 

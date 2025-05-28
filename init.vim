@@ -12,11 +12,11 @@ Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'lervag/vimtex'
 Plug 'luochen1990/rainbow'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'RasmusKB/project.nvim'
 Plug 'voldikss/vim-floaterm'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'williamboman/mason.nvim'
-Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -26,8 +26,8 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'mfussenegger/nvim-jdtls'
-Plug 'ahmedkhalf/project.nvim'
 " Always last
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
@@ -178,10 +178,12 @@ if (has("termguicolors"))
 endif
 
 " Keybindings for telescope
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+" Keybinding for opening telescopes project manager
+nnoremap <leader>f :lua require'telescope'.extensions.projects.projects{}<cr>
 
 " Keybinds to make X and P not overwrite current clipboard
 noremap x "_x
@@ -196,11 +198,11 @@ nnoremap <silent> <C-n> :silent !alacritty &<CR>
 
 " Setup for mason.nvim for Language Server Protocols and nvim-cmp for autocomplete
 lua << EOF
---require("mason").setup()
---require("mason-lspconfig").setup()
---require("mason-lspconfig").setup {
-	--ensure_installed = { "jdtls", "lua_ls", "tsserver", "omnisharp" },
---}
+require("mason").setup()
+require("mason-lspconfig").setup()
+require("mason-lspconfig").setup {
+	ensure_installed = { "jdtls", "lua_ls", "eslint" },
+}
   local cmp = require'cmp'
 
   cmp.setup({
@@ -252,52 +254,7 @@ lua << EOF
   })
   -- Setup for indent-blankline
   require("ibl").setup {}
-
-  use {
-	"ahmedkhalf/project.nvim",
-	config = function()
-	  require("project_nvim").setup {
-	  -- Manual mode doesn't automatically change your root directory, so you have
-	  -- the option to manually do so using `:ProjectRoot` command.
-	  manual_mode = false,
-
-	  -- Methods of detecting the root directory. **"lsp"** uses the native neovim
-	  -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
-	  -- order matters: if one is not detected, the other is used as fallback. You
-	  -- can also delete or rearangne the detection methods.
-	  detection_methods = { "lsp", "pattern" },
-
-	  -- All the patterns used to detect root dir, when **"pattern"** is in
-	  -- detection_methods
-	  patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
-
-	  -- Table of lsp clients to ignore by name
-	  -- eg: { "efm", ... }
-	  ignore_lsp = {},
-
-	  -- Don't calculate root dir on specific directories
-	  -- Ex: { "~/.cargo/*", ... }
-	  exclude_dirs = {},
-
-	  -- Show hidden files in telescope
-	  show_hidden = false,
-
-	  -- When set to false, you will get a message when project.nvim changes your
-	  -- directory.
-	  silent_chdir = true,
-
-	  -- What scope to change the directory, valid options are
-	  -- * global (default)
-	  -- * tab
-	  -- * win
-	  scope_chdir = 'global',
-
-	  -- Path where project.nvim will store the project history for use in
-	  -- telescope
-	  datapath = vim.fn.stdpath("data"),
-	}
-	end
-  }
+  -- Setup for telescopes projects for allowing to switch project root
+  require("project_nvim").setup {}
   require('telescope').load_extension('projects')
-  require('telescope').extensions.projects.projects{}
 EOF
