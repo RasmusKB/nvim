@@ -9,7 +9,6 @@ Plug 'ap/vim-css-color'
 Plug 'morhetz/gruvbox'
 Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'lervag/vimtex'
-Plug 'luochen1990/rainbow'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
 Plug 'RasmusKB/project.nvim'
@@ -25,6 +24,8 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'mfussenegger/nvim-jdtls'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'HiPhish/rainbow-delimiters.nvim'
 " Always last
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
@@ -37,7 +38,6 @@ colorscheme gruvbox
 let g:lightline.colorscheme = 'gruvbox'
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_contrast_light = 'soft'
-
 " Nerd tree settings and auto close when only buffer
 nmap <leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -194,12 +194,16 @@ let g:floaterm_keymap_toggle = '<Leader>ft'
 " Keybind for opening a new alacritty terminal
 nnoremap <silent> <C-n> :silent !alacritty &<CR>
 
+" Treat js files as jsx files for ts_ls
+autocmd BufRead,BufNewFile *.js set filetype=javascriptreact
 " Setup for mason.nvim for Language Server Protocols and nvim-cmp for autocomplete
 lua << EOF
   require("mason").setup()
   local lspconfig = require("lspconfig")
 
   lspconfig.ts_ls.setup({
+	root_dir = require('lspconfig.util').root_pattern("package.json", "tsconfig.json", ".git"),
+	single_file_support = false,
 	settings = {
 		typescript = {
 			inlayHints = {
@@ -275,8 +279,44 @@ lua << EOF
     })
   })
   -- Setup for indent-blankline
-  require("ibl").setup {}
+  require('ibl').setup {}
   -- Setup for telescopes projects for allowing to switch project root
-  require("project_nvim").setup {}
+  require('project_nvim').setup {}
   require('telescope').load_extension('projects')
+  require'nvim-treesitter.configs'.setup {
+	ensure_installed = {'java', 'javascript', 'tsx', 'typescript' },
+	highlight = {
+	  enable = true,
+	  additional_vim_regex_highlighting = false,
+	},
+  }
+-- Setup rainbow-delimiters with colors similar to luochen1990/rainbow
+  vim.cmd [[
+    highlight RainbowDelimiterRed     guifg=#FF0000
+    highlight RainbowDelimiterOrange  guifg=#FF7F00
+    highlight RainbowDelimiterYellow  guifg=#FFFF00
+    highlight RainbowDelimiterGreen   guifg=#00FF00
+    highlight RainbowDelimiterBlue    guifg=#0000FF
+    highlight RainbowDelimiterViolet  guifg=#4B0082
+    highlight RainbowDelimiterCyan    guifg=#8B00FF
+  ]]
+
+-- Enable the plugin using Treesitter hooks
+  vim.g.rainbow_delimiters = {
+    strategy = {
+      [''] = require('rainbow-delimiters').strategy['global'],
+    },
+    query = {
+      [''] = 'rainbow-delimiters',
+    },
+    highlight = {
+      'RainbowDelimiterRed',
+      'RainbowDelimiterOrange',
+      'RainbowDelimiterYellow',
+      'RainbowDelimiterGreen',
+      'RainbowDelimiterBlue',
+      'RainbowDelimiterViolet',
+      'RainbowDelimiterCyan',
+    },
+  }
 EOF
