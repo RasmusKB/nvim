@@ -25,6 +25,8 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'mfussenegger/nvim-jdtls'
+Plug 'ahmedkhalf/project.nvim'
 " Always last
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
@@ -86,7 +88,7 @@ command CS :tabnew ~/Documents/vim/cheatsheet.txt
 
 "NerdTree stuff
 command NT NERDTree
-map <C-n> :NERDTreeToggle<CR>
+map <C-t> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen='1'
 
 "VimTex stuff
@@ -189,13 +191,16 @@ xnoremap p pgvy
 " Keybindings for floatterms
 let g:floaterm_keymap_toggle = '<Leader>ft'
 
+" Keybind for opening a new alacritty terminal
+nnoremap <silent> <C-n> :silent !alacritty &<CR>
+
 " Setup for mason.nvim for Language Server Protocols and nvim-cmp for autocomplete
 lua << EOF
-require("mason").setup()
-require("mason-lspconfig").setup()
-require("mason-lspconfig").setup {
-	ensure_installed = { "jdtls", "lua_ls", "tsserver", "omnisharp" },
-}
+--require("mason").setup()
+--require("mason-lspconfig").setup()
+--require("mason-lspconfig").setup {
+	--ensure_installed = { "jdtls", "lua_ls", "tsserver", "omnisharp" },
+--}
   local cmp = require'cmp'
 
   cmp.setup({
@@ -246,19 +251,54 @@ require("mason-lspconfig").setup {
       { name = 'cmdline' }
     })
   })
-
-  -- Set up lspconfig.
-  local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['jdtls'].setup {
-    capabilities = capabilities
-  }
-  require('lspconfig')['tsserver'].setup {
-    capabilities = capabilities
-  }
-  require('lspconfig')['lua_ls'].setup {
-    capabilities = capabilities
-  }
   -- Setup for indent-blankline
   require("ibl").setup {}
+
+  use {
+	"ahmedkhalf/project.nvim",
+	config = function()
+	  require("project_nvim").setup {
+	  -- Manual mode doesn't automatically change your root directory, so you have
+	  -- the option to manually do so using `:ProjectRoot` command.
+	  manual_mode = false,
+
+	  -- Methods of detecting the root directory. **"lsp"** uses the native neovim
+	  -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
+	  -- order matters: if one is not detected, the other is used as fallback. You
+	  -- can also delete or rearangne the detection methods.
+	  detection_methods = { "lsp", "pattern" },
+
+	  -- All the patterns used to detect root dir, when **"pattern"** is in
+	  -- detection_methods
+	  patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+
+	  -- Table of lsp clients to ignore by name
+	  -- eg: { "efm", ... }
+	  ignore_lsp = {},
+
+	  -- Don't calculate root dir on specific directories
+	  -- Ex: { "~/.cargo/*", ... }
+	  exclude_dirs = {},
+
+	  -- Show hidden files in telescope
+	  show_hidden = false,
+
+	  -- When set to false, you will get a message when project.nvim changes your
+	  -- directory.
+	  silent_chdir = true,
+
+	  -- What scope to change the directory, valid options are
+	  -- * global (default)
+	  -- * tab
+	  -- * win
+	  scope_chdir = 'global',
+
+	  -- Path where project.nvim will store the project history for use in
+	  -- telescope
+	  datapath = vim.fn.stdpath("data"),
+	}
+	end
+  }
+  require('telescope').load_extension('projects')
+  require('telescope').extensions.projects.projects{}
 EOF
