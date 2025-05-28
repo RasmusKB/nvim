@@ -26,7 +26,6 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'mfussenegger/nvim-jdtls'
 " Always last
-Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
@@ -197,11 +196,35 @@ nnoremap <silent> <C-n> :silent !alacritty &<CR>
 
 " Setup for mason.nvim for Language Server Protocols and nvim-cmp for autocomplete
 lua << EOF
-require("mason").setup()
-require("mason-lspconfig").setup()
-require("mason-lspconfig").setup {
-	ensure_installed = { "jdtls", "lua_ls", "eslint" },
-}
+  require("mason").setup()
+  local lspconfig = require("lspconfig")
+
+  lspconfig.ts_ls.setup({
+	settings = {
+		typescript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "literal",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = false,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+		javascript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "all",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+	},
+  })
   local cmp = require'cmp'
 
   cmp.setup({
