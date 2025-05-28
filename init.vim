@@ -196,39 +196,7 @@ nnoremap <silent> <C-n> :silent !alacritty &<CR>
 
 " Treat js files as jsx files for ts_ls
 autocmd BufRead,BufNewFile *.js set filetype=javascriptreact
-" Setup for mason.nvim for Language Server Protocols and nvim-cmp for autocomplete
 lua << EOF
-  require("mason").setup()
-  local lspconfig = require("lspconfig")
-
-  lspconfig.ts_ls.setup({
-	root_dir = require('lspconfig.util').root_pattern("package.json", "tsconfig.json", ".git"),
-	single_file_support = false,
-	settings = {
-		typescript = {
-			inlayHints = {
-				includeInlayParameterNameHints = "literal",
-				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayVariableTypeHints = false,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayEnumMemberValueHints = true,
-			},
-		},
-		javascript = {
-			inlayHints = {
-				includeInlayParameterNameHints = "all",
-				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-				includeInlayFunctionParameterTypeHints = true,
-				includeInlayVariableTypeHints = true,
-				includeInlayPropertyDeclarationTypeHints = true,
-				includeInlayFunctionLikeReturnTypeHints = true,
-				includeInlayEnumMemberValueHints = true,
-			},
-		},
-	},
-  })
   local cmp = require'cmp'
 
   cmp.setup({
@@ -278,6 +246,40 @@ lua << EOF
       { name = 'cmdline' }
     })
   })
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  --- Setup for lsp
+  require("mason").setup()
+  local lspconfig = require("lspconfig")
+
+  lspconfig.ts_ls.setup({
+    capabilities = capabilities,
+	root_dir = require('lspconfig.util').root_pattern("package.json", "tsconfig.json", ".git"),
+	single_file_support = false,
+	settings = {
+		typescript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "literal",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = false,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+		javascript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "all",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+	},
+  })
   -- Setup for indent-blankline
   require('ibl').setup {}
   -- Setup for telescopes projects for allowing to switch project root
@@ -290,18 +292,18 @@ lua << EOF
 	  additional_vim_regex_highlighting = false,
 	},
   }
--- Setup rainbow-delimiters with colors similar to luochen1990/rainbow
+  -- Setup rainbow-delimiters with colors similar to luochen1990/rainbow
   vim.cmd [[
-    highlight RainbowDelimiterRed     guifg=#FF0000
-    highlight RainbowDelimiterOrange  guifg=#FF7F00
-    highlight RainbowDelimiterYellow  guifg=#FFFF00
-    highlight RainbowDelimiterGreen   guifg=#00FF00
-    highlight RainbowDelimiterBlue    guifg=#0000FF
-    highlight RainbowDelimiterViolet  guifg=#4B0082
-    highlight RainbowDelimiterCyan    guifg=#8B00FF
+    highlight RainbowDelimiterRed     guifg=#fb4934
+    highlight RainbowDelimiterOrange  guifg=#fe8019
+    highlight RainbowDelimiterYellow  guifg=#fabd2f
+    highlight RainbowDelimiterGreen   guifg=#b8bb26
+    highlight RainbowDelimiterAqua    guifg=#8ec07c
+    highlight RainbowDelimiterBlue    guifg=#83a598
+    highlight RainbowDelimiterPurple  guifg=#d3869b
   ]]
 
--- Enable the plugin using Treesitter hooks
+  -- Enable the plugin using Treesitter hooks
   vim.g.rainbow_delimiters = {
     strategy = {
       [''] = require('rainbow-delimiters').strategy['global'],
@@ -314,9 +316,9 @@ lua << EOF
       'RainbowDelimiterOrange',
       'RainbowDelimiterYellow',
       'RainbowDelimiterGreen',
+      'RainbowDelimiterAqua',
       'RainbowDelimiterBlue',
-      'RainbowDelimiterViolet',
-      'RainbowDelimiterCyan',
+      'RainbowDelimiterPurple',
     },
   }
 EOF
