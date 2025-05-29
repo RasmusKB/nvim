@@ -3,7 +3,6 @@ return {
 		'nvim-telescope/telescope.nvim', branch = '0.1.x',
 		dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
 		config = function()
-			local fb_actions = require("telescope").extensions.file_browser
 			require("telescope").setup {
 				defaults = {
 					mappings = {
@@ -27,10 +26,10 @@ return {
 					file_browser = {
 						mappings = {
 							["i"] = {
-								["<C-bs>"] = fb_actions.goto_parent_dir,
+								["<C-bs>"] = require("telescope").extensions.file_browser.actions.goto_parent_dir,
 							},
 							["n"] = {
-								["<C-bs>"] = fb_actions.goto_parent_dir,
+								["<C-bs>"] = require("telescope").extensions.file_browser.actions.goto_parent_dir,
 							}
 						}
 					}
