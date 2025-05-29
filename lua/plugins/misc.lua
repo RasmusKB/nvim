@@ -21,16 +21,22 @@ return {
 		}
 	},
 	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
+		"echasnovski/mini.icons",
+		lazy = true,
 		opts = {
-			exclude = {
-				filetypes = { "dashboard" }
+			file = {
+				[".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },
+				["devcontainer.json"] = { glyph = "", hl = "MiniIconsAzure" },
+			},
+			filetype = {
+				dotenv = { glyph = "", hl = "MiniIconsYellow" },
 			},
 		},
-	},
-	{
-		'akinsho/bufferline.nvim', version = "*",
-		dependencies = 'nvim-tree/nvim-web-devicons'
-	},
+		init = function()
+			package.preload["nvim-web-devicons"] = function()
+				require("mini.icons").mock_nvim_web_devicons()
+				return package.loaded["nvim-web-devicons"]
+			end
+		end,
+	}
 }
