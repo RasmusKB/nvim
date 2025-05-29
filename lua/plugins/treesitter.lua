@@ -10,6 +10,7 @@ return {
 					"vim",
 					"vimdoc",
 					"python",
+					"javascript",
 				},
 				highlight = {
 					enable = true,
