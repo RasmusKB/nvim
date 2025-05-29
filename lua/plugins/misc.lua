@@ -9,4 +9,20 @@ return {
 			})
 		end,
 	},
+	{
+		"voldikss/vim-floaterm",
+		keys = {
+			{
+				"<leader>ft",
+				"<cmd>FloatermToggle<CR>",
+				desc = "Toggle Floaterm",
+				mode = { "n", "t" },
+			},
+		}
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
+		opts = {},
+	},
 }

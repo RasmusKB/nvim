@@ -1,8 +1,9 @@
 return {
 	{
 		'nvim-telescope/telescope.nvim', branch = '0.1.x',
-		dependencies = { 'nvim-lua/plenary.nvim' },
+		dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
 		config = function()
+			local fb_actions = require("telescope").extensions.file_browser
 			require("telescope").setup {
 				defaults = {
 					mappings = {
@@ -16,10 +17,30 @@ return {
 								["j"] = "move_selection_next",
 								["k"] = "move_selection_previous",
 						},
+					},
+					options = {
+						sort_lastused = true,
+						sort_mru = true,
+					}
+				},
+				extensions = {
+					file_browser = {
+						mappings = {
+							["i"] = {
+								["<C-bs>"] = fb_actions.goto_parent_dir,
+							},
+							["n"] = {
+								["<C-bs>"] = fb_actions.goto_parent_dir,
+							}
+						}
 					}
 				}
 			}
+			require('telescope').load_extension('file_browser')
 		end,
+		opts = {
+			sort_lastused = true,
+		},
 		keys = {
 			{
 				"<leader>ff",
@@ -41,7 +62,19 @@ return {
 				function() require("telescope.builtin").help_tags() end,
 				desc = "Telescope help tags",
 			},
+			{
+				"<leader>fv",
+				function() require("telescope").extensions.file_browser.file_browser{
+					path = vim.fn.expand("%:p:h"),
+				}
+				end,
+				desc = "Telescope file browser"
+			}
 		}
+	},
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
 	},
 	{
 		'RasmusKB/project.nvim',

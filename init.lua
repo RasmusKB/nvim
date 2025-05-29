@@ -71,7 +71,6 @@ vim.keymap.set('c', 'w!!', function()
 end, { noremap = true, desc = 'Save with sudo' })
 
 -- Misc settings
-vim.o.hlsearch = false                      -- Don't highlight search results
 vim.opt.clipboard:append("unnamedplus")    -- Use system clipboard
 vim.o.compatible = false                   -- Not necessary in Neovim, but safe
 vim.o.splitbelow = true                    -- Horizontal splits below
