@@ -7,3 +7,7 @@ https://github.com/williamboman/mason-lspconfig.nvim
 https://github.com/hrsh7th/nvim-cmp/
 https://github.com/hrsh7th/vim-vsnip (vim-vsnip is only used for the setup of nvim-cmp(autocomplete) and nothing else)
 
+Req.
+Nerd-font (0xProto)
+Lua v.5.1
+Luarocks
