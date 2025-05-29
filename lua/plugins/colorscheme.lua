@@ -1,9 +1,7 @@
-return { 
-	{ "morhetz/gruvbox" },
-	{
-		"LazyVim/LazyVim",
-		opts = {
-			colorscheme = "gruvbox",
-		}
-	}
+return {
+	{ 'morhetz/gruvbox',
+	config = function()
+		vim.cmd.colorscheme "gruvbox"
+	end,
+	},
 }
