@@ -147,5 +147,12 @@ vim.keymap.set('x', 'p', 'pgvy', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-n>', function()
   vim.fn.jobstart("alacritty", { detach = true })
 end, { noremap = true, silent = true, desc = "Open new Alacritty terminal" })
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
 
 require("config.lazy")
