@@ -2,6 +2,24 @@ return {
 	{
 		'nvim-telescope/telescope.nvim', branch = '0.1.x',
 		dependencies = { 'nvim-lua/plenary.nvim' },
+		config = function()
+			require("telescope").setup {
+				defaults = {
+					mappings = {
+						i = {
+								["<C-j>"] = "move_selection_next",
+								["<C-k>"] = "move_selection_previous",
+								["<C-n>"] = "cycle_history_next",
+								["<C-p>"] = "cycle_history_prev",
+						},
+						n = {
+								["j"] = "move_selection_next",
+								["k"] = "move_selection_previous",
+						},
+					}
+				}
+			}
+		end,
 		keys = {
 			{
 				"<leader>ff",
