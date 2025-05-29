@@ -7,14 +7,14 @@ return {
 				defaults = {
 					mappings = {
 						i = {
-								["<C-j>"] = "move_selection_next",
-								["<C-k>"] = "move_selection_previous",
-								["<C-n>"] = "cycle_history_next",
-								["<C-p>"] = "cycle_history_prev",
+							["<C-j>"] = "move_selection_next",
+							["<C-k>"] = "move_selection_previous",
+							["<C-n>"] = "cycle_history_next",
+							["<C-p>"] = "cycle_history_prev",
 						},
 						n = {
-								["j"] = "move_selection_next",
-								["k"] = "move_selection_previous",
+							["j"] = "move_selection_next",
+							["k"] = "move_selection_previous",
 						},
 					}
 				}
