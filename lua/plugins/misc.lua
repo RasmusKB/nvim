@@ -38,5 +38,12 @@ return {
 				return package.loaded["nvim-web-devicons"]
 			end
 		end,
-	}
+	},
+	{
+		"folke/snacks.nvim",
+		opts = {
+			indent = { enabled = true },
+			scope = { enabled = true },
+		},
+	},
 }
