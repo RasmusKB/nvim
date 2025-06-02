@@ -43,6 +43,7 @@ return {
     },
     config = function(_, opts)
         require("bufferline").setup(opts)
+		require('bufferline.groups').builtin.pinned:with({ icon = "󰐃 " })
         -- Fix bufferline after restoring session
         vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
             callback = function()
