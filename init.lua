@@ -157,4 +157,9 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
+vim.keymap.set('n', '<Esc>', function()
+  vim.cmd("nohlsearch")
+  return "<Esc>"
+end, { noremap = true, expr = true, silent = true })
+
 require("config.lazy")
